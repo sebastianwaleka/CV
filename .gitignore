@@ -1,3 +1,4 @@
 .idea/
 venv/
 json/.pytest_cache
+palindrome/.pytest_cache
