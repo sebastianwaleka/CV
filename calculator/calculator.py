@@ -44,12 +44,4 @@ equal_sign = tkinter.Button(master=root, text='=')
 equal_sign.grid(row=4, column=1, columnspan=3)
 equal_sign.config(width=10)
 
-# dodaj_button = tkinter.Button(master=root, text='Dodaj', command=zlacz_napisy)
-# dodaj_button.grid(row=2, column=0)
-#
-# czysc_button = tkinter.Button(master=root, text='Czyść', command=czysc)
-# czysc_button.grid(row=2, column=1)
-#
-# wynik_label = tkinter.Label(master=root, text='Wynik: ')
-# wynik_label.grid(row=3,column=1)
 root.mainloop()
