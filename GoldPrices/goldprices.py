@@ -4,6 +4,8 @@ Program will download Gold prices from NBP using API.
 
 import urllib.request
 import json
+import matplotlib.pyplot as plt
+import numpy as np
 from datetime import datetime
 
 class GoldPrices:
@@ -23,7 +25,7 @@ class GoldPrices:
         with urllib.request.urlopen('http://api.nbp.pl/api/cenyzlota/today/?format=json') as today:
             today = today.read()
             today = json.loads(today)
-            output = f'{today[0]["data"]} - {(today[0]["cena"]*31.1):.2f} zł'
+            output = f'{today[0]["data"]} - {(today[0]["cena"]*31.1):.2f} zł / 1oz'
         return output
 
     def goldprice_date(self, date):
@@ -31,7 +33,7 @@ class GoldPrices:
             with urllib.request.urlopen(f'http://api.nbp.pl/api/cenyzlota/{date}?format=json') as date:
                 date = date.read()
                 date = json.loads(date)
-                output = f'{date[0]["data"]} - {(date[0]["cena"]*31.1):.2f} zł'
+                output = f'{date[0]["data"]} - {(date[0]["cena"]*31.1):.2f} zł / 1oz'
             return output
         except Exception as e:
             print(f'An error occurs: {e}')
@@ -47,3 +49,19 @@ class GoldPrices:
             return price_range
         except Exception as e:
             print(f'An error occurs: {e}')
+
+    def draw_graph_last_days(self, days):
+        last = self.goldprice_last_days(days)
+        only_dates = []
+        only_prices = []
+        for element in last:
+            for dates in element:
+                only_dates.append(dates)
+            for prices in element.values():
+                only_prices.append(prices*31.1)
+
+        plt.figure()
+        plt.plot(only_dates, only_prices)
+        plt.show()
+
+GoldPrices().draw_graph_last_days(30)
