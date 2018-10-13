@@ -27,11 +27,14 @@ class GoldPrices:
         return output
 
     def goldprice_date(self, date):
-        with urllib.request.urlopen(f'http://api.nbp.pl/api/cenyzlota/{date}?format=json') as date:
-            date = date.read()
-            date = json.loads(date)
-            output = f'{date[0]["data"]} - {(date[0]["cena"]*31.1):.2f} zł'
-        return output
+        try:
+            with urllib.request.urlopen(f'http://api.nbp.pl/api/cenyzlota/{date}?format=json') as date:
+                date = date.read()
+                date = json.loads(date)
+                output = f'{date[0]["data"]} - {(date[0]["cena"]*31.1):.2f} zł'
+            return output
+        except Exception as e:
+            print(f'An error occurs: {e}')
 
     def goldprice_daterange(self, start_date, end_date=datetime.date(datetime.today())):
         price_range = []
