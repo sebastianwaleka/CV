@@ -66,8 +66,8 @@ class GoldPrices:
         plt.grid(True)
         plt.xlabel("date")
         plt.ylabel("price")
-        plt.title(f'Gold prices in last {len(only_dates)} days')
+        plt.title(f'Gold prices in last {days} days')
         plt.show()
 
 
-GoldPrices().draw_graph_last_days(215)
+GoldPrices().draw_graph_last_days(15)
