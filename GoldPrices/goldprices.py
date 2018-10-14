@@ -7,6 +7,7 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 from datetime import datetime
+from matplotlib.ticker import MaxNLocator, LogLocator, MultipleLocator, AutoMinorLocator
 
 class GoldPrices:
     def goldprice_last_days(self, days):
@@ -60,8 +61,15 @@ class GoldPrices:
             for prices in element.values():
                 only_prices.append(prices*31.1)
 
+        # fig, (ax) = plt.subplots(1, 1)
         plt.figure()
         plt.plot(only_dates, only_prices)
+        # ax.get_xaxis().set_ticks(only_dates[::10])
+        # ax.get_xaxis().set_ticks(only_dates, minor=True)
+        plt.grid(True)
+        plt.xlabel("date")
+        plt.ylabel("price")
+        plt.title(f'Gold prices in last {len(only_dates)} days')
         plt.show()
 
-GoldPrices().draw_graph_last_days(30)
+GoldPrices().draw_graph_last_days(215)
