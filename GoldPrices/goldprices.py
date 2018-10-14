@@ -5,9 +5,8 @@ Program will download Gold prices from NBP using API.
 import urllib.request
 import json
 import matplotlib.pyplot as plt
-import numpy as np
 from datetime import datetime
-from matplotlib.ticker import MaxNLocator, LogLocator, MultipleLocator, AutoMinorLocator
+
 
 class GoldPrices:
     def goldprice_last_days(self, days):
@@ -42,11 +41,12 @@ class GoldPrices:
     def goldprice_daterange(self, start_date, end_date=datetime.date(datetime.today())):
         price_range = []
         try:
-            with urllib.request.urlopen((f'http://api.nbp.pl/api/cenyzlota/{start_date}/{end_date}/?format=json')) as data:
+            with urllib.request.urlopen(
+                    (f'http://api.nbp.pl/api/cenyzlota/{start_date}/{end_date}/?format=json')) as data:
                 data = data.read()
                 data = json.loads(data)
                 for element in data:
-                    price_range.append({element['data']: round(element['cena']*31.1, 2)})
+                    price_range.append({element['data']: round(element['cena'] * 31.1, 2)})
             return price_range
         except Exception as e:
             print(f'An error occurs: {e}')
@@ -59,17 +59,15 @@ class GoldPrices:
             for dates in element:
                 only_dates.append(dates)
             for prices in element.values():
-                only_prices.append(prices*31.1)
+                only_prices.append(prices * 31.1)
 
-        # fig, (ax) = plt.subplots(1, 1)
         plt.figure()
         plt.plot(only_dates, only_prices)
-        # ax.get_xaxis().set_ticks(only_dates[::10])
-        # ax.get_xaxis().set_ticks(only_dates, minor=True)
         plt.grid(True)
         plt.xlabel("date")
         plt.ylabel("price")
         plt.title(f'Gold prices in last {len(only_dates)} days')
         plt.show()
+
 
 GoldPrices().draw_graph_last_days(215)
