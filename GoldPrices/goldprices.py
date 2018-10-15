@@ -54,20 +54,27 @@ class GoldPrices:
     def draw_graph_last_days(self, days):
         last = self.goldprice_last_days(days)
         only_dates = []
+        x_ticks = []
         only_prices = []
         for element in last:
             for dates in element:
                 only_dates.append(dates)
+                if dates.endswith('01'):
+                    x_ticks.append(dates)
+                elif dates.endswith('02'):
+                    x_ticks.append(dates)
+                elif dates.endswith('03'):
+                    x_ticks.append(dates)
             for prices in element.values():
                 only_prices.append(prices * 31.1)
 
         plt.figure()
         plt.plot(only_dates, only_prices)
         plt.grid(True)
-        plt.xlabel("date")
+        plt.xticks(x_ticks, rotation=90)
         plt.ylabel("price")
         plt.title(f'Gold prices in last {days} days')
         plt.show()
 
 
-GoldPrices().draw_graph_last_days(15)
+GoldPrices().draw_graph_last_days(115)
