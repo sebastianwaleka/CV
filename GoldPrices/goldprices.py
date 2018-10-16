@@ -56,25 +56,33 @@ class GoldPrices:
         only_dates = []
         x_ticks = []
         only_prices = []
+        months = set()
         for element in last:
-            for dates in element:
+            for dates in element.keys():
                 only_dates.append(dates)
-                if dates.endswith('01'):
-                    x_ticks.append(dates)
-                elif dates.endswith('02'):
-                    x_ticks.append(dates)
-                elif dates.endswith('03'):
-                    x_ticks.append(dates)
             for prices in element.values():
                 only_prices.append(prices * 31.1)
-
+            for month in element.keys():
+                months.add(month[:7])
+        for date in only_dates:
+            if date[:7] in months:
+                x_ticks.append(date)
+                months.remove(date[:7])  # a way to avoid duplicates
+        if only_dates[0] not in x_ticks:
+            x_ticks.insert(0, only_dates[0])  # adding first date to x axis
+        if only_dates[-1] not in x_ticks:
+            x_ticks.append(only_dates[-1])  # adding last date to x axis
+        # creating a graph
         plt.figure()
         plt.plot(only_dates, only_prices)
         plt.grid(True)
-        plt.xticks(x_ticks, rotation=90)
-        plt.ylabel("price")
+        if days > 30:  # setting number of ticks
+            plt.xticks(x_ticks, rotation=90)
+        else:
+            plt.xticks(only_dates, rotation=90)
+        plt.ylabel("zł/1oz")
         plt.title(f'Gold prices in last {days} days')
         plt.show()
 
 
-GoldPrices().draw_graph_last_days(115)
+GoldPrices().draw_graph_last_days(235)
