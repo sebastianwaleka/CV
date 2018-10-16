@@ -1,5 +1,6 @@
 '''
-Program will download Gold prices from NBP using API.
+Program will download Gold prices from NBP using API. It will also show prices from last N days in graphical format.
+N <= 255.
 '''
 
 import urllib.request
@@ -72,16 +73,26 @@ class GoldPrices:
             x_ticks.insert(0, only_dates[0])  # adding first date to x axis
         if only_dates[-1] not in x_ticks:
             x_ticks.append(only_dates[-1])  # adding last date to x axis
+        # setting max price
+        max_price = max(only_prices)
+        max_price_date_pos = only_prices.index(max_price)
+        max_price_date = only_dates[max_price_date_pos]
+        # setting min price
+        min_price = min(only_prices)
+        min_price_date_pos = only_prices.index(min_price)
+        min_price_date = only_dates[min_price_date_pos]
         # creating a graph
         plt.figure()
         plt.plot(only_dates, only_prices)
         plt.grid(True)
         if days > 30:  # setting number of ticks
-            plt.xticks(x_ticks, rotation=90)
+            plt.xticks(x_ticks, rotation=90, fontsize=8)
         else:
-            plt.xticks(only_dates, rotation=90)
+            plt.xticks(only_dates, rotation=90, fontsize=8)
         plt.ylabel("zł/1oz")
-        plt.title(f'Gold prices in last {days} days')
+        plt.title(f'Gold prices in last {days} days', fontsize=12)
+        plt.annotate(f'{max_price:.2f} zł', xy=(max_price_date, max_price), xytext=(max_price_date, max_price))
+        plt.annotate(f'{min_price:.2f} zł', xy=(min_price_date, min_price), xytext=(min_price_date, min_price))
         plt.show()
 
 
