@@ -17,7 +17,7 @@ class GoldPrices:
                 data = data.read()
                 data = json.loads(data)
                 for day in data:
-                    prices.append({day['data']: round(day['cena']*31.1,2)})
+                    prices.append({day['data']: round(day['cena'] * 31.1, 2)})
             return prices
         except Exception as e:
             print(f'An error occurs: {e}')
@@ -147,6 +147,3 @@ class GoldPrices:
         plt.annotate(f'{data["min_price"]:.2f} zł', xy=(data['min_price_date'], data['min_price']),
                      xytext=(data['min_price_date'], data['min_price']))
         plt.show()
-
-
-GoldPrices().draw_graph(GoldPrices().graph_date_range,'2017-10-15', '2018-03-11')
