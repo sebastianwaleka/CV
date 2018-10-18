@@ -17,7 +17,7 @@ class GoldPrices:
                 data = data.read()
                 data = json.loads(data)
                 for day in data:
-                    prices.append({day['data']: day['cena']})
+                    prices.append({day['data']: round(day['cena']*31.1,2)})
             return prices
         except Exception as e:
             print(f'An error occurs: {e}')
@@ -52,7 +52,7 @@ class GoldPrices:
         except Exception as e:
             print(f'An error occurs: {e}')
 
-    def draw_graph_last_days(self, days):
+    def graph_last_days(self, days):
         last = self.goldprice_last_days(days)
         only_dates = []
         x_ticks = []
@@ -62,7 +62,7 @@ class GoldPrices:
             for dates in element.keys():
                 only_dates.append(dates)
             for prices in element.values():
-                only_prices.append(prices * 31.1)
+                only_prices.append(prices)
             for month in element.keys():
                 months.add(month[:7])
         for date in only_dates:
@@ -81,19 +81,72 @@ class GoldPrices:
         min_price = min(only_prices)
         min_price_date_pos = only_prices.index(min_price)
         min_price_date = only_dates[min_price_date_pos]
+        return {
+            'only_dates': only_dates,
+            'only_prices': only_prices,
+            'x_ticks': x_ticks,
+            'max_price': max_price,
+            'max_price_date': max_price_date,
+            'min_price': min_price,
+            'min_price_date': min_price_date
+        }
+
+    def graph_date_range(self, start_date, end_date=datetime.date(datetime.today())):
+        date_range = self.goldprice_daterange(start_date, end_date)
+        only_dates = []
+        x_ticks = []
+        only_prices = []
+        months = set()
+        for element in date_range:
+            for dates in element.keys():
+                only_dates.append(dates)
+            for prices in element.values():
+                only_prices.append(prices)
+            for month in element.keys():
+                months.add(month[:7])
+        for date in only_dates:
+            if date[:7] in months:
+                x_ticks.append(date)
+                months.remove(date[:7])  # a way to avoid duplicates
+        if only_dates[0] not in x_ticks:
+            x_ticks.insert(0, only_dates[0])  # adding first date to x axis
+        if only_dates[-1] not in x_ticks:
+            x_ticks.append(only_dates[-1])  # adding last date to x axis
+        # setting max price
+        max_price = max(only_prices)
+        max_price_date_pos = only_prices.index(max_price)
+        max_price_date = only_dates[max_price_date_pos]
+        # setting min price
+        min_price = min(only_prices)
+        min_price_date_pos = only_prices.index(min_price)
+        min_price_date = only_dates[min_price_date_pos]
+        return {
+            'only_dates': only_dates,
+            'only_prices': only_prices,
+            'x_ticks': x_ticks,
+            'max_price': max_price,
+            'max_price_date': max_price_date,
+            'min_price': min_price,
+            'min_price_date': min_price_date
+        }
+
+    def draw_graph(self, function, *arg):
+        data = function(*arg)
         # creating a graph
         plt.figure()
-        plt.plot(only_dates, only_prices)
+        plt.plot(data['only_dates'], data['only_prices'])
         plt.grid(True)
-        if days > 30:  # setting number of ticks
-            plt.xticks(x_ticks, rotation=90, fontsize=8)
+        if len(data['only_dates']) > 30:  # setting number of ticks
+            plt.xticks(data['x_ticks'], rotation=90, fontsize=8)
         else:
-            plt.xticks(only_dates, rotation=90, fontsize=8)
+            plt.xticks(data['only_dates'], rotation=90, fontsize=8)
         plt.ylabel("zł/1oz")
-        plt.title(f'Gold prices in last {days} days', fontsize=12)
-        plt.annotate(f'{max_price:.2f} zł', xy=(max_price_date, max_price), xytext=(max_price_date, max_price))
-        plt.annotate(f'{min_price:.2f} zł', xy=(min_price_date, min_price), xytext=(min_price_date, min_price))
+        plt.title(f'Gold prices from {data["only_dates"][0]} to {data["only_dates"][-1]}', fontsize=12)
+        plt.annotate(f'{data["max_price"]:.2f} zł', xy=(data['max_price_date'], data['max_price']),
+                     xytext=(data['max_price_date'], data['max_price']))
+        plt.annotate(f'{data["min_price"]:.2f} zł', xy=(data['min_price_date'], data['min_price']),
+                     xytext=(data['min_price_date'], data['min_price']))
         plt.show()
 
 
-GoldPrices().draw_graph_last_days(235)
+GoldPrices().draw_graph(GoldPrices().graph_date_range,'2017-10-15', '2018-03-11')
