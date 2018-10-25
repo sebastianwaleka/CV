@@ -51,8 +51,8 @@ class GoldPrices:
         except Exception as e:
             print(f'An error occurs: {e}')
 
-    def draw_graph(self, function, *arg):
-        data = function(*arg)
+    def draw_graph(self, function, *args):
+        data = function(*args)
         only_dates = []
         x_ticks = []
         only_prices = []
