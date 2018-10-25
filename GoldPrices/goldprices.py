@@ -94,4 +94,5 @@ class GoldPrices:
                      xytext=(max_price_date, max_price))
         plt.annotate(f'{min_price:.2f} zł', xy=(min_price_date, min_price),
                      xytext=(min_price_date, min_price))
+        # plt.savefig('wykres.png')
         plt.show()
