@@ -22,10 +22,13 @@ class GoldPrices:
             print(f'An error occurs: {e}')
 
     def goldprice_today(self):
-        with urllib.request.urlopen('http://api.nbp.pl/api/cenyzlota/today/?format=json') as today:
-            today = today.read()
-            today = json.loads(today)
-            output = f'{today[0]["data"]} - {(today[0]["cena"]*31.1):.2f} zł / 1oz'
+        try:
+            with urllib.request.urlopen('http://api.nbp.pl/api/cenyzlota/today/?format=json') as today:
+                today = today.read()
+                today = json.loads(today)
+                output = f'{today[0]["data"]} - {(today[0]["cena"]*31.1):.2f} zł / 1oz'
+        except Exception as e:
+            output = f'Error: {e}'
         return output
 
     def goldprice_date(self, date):
@@ -94,5 +97,4 @@ class GoldPrices:
                      xytext=(max_price_date, max_price))
         plt.annotate(f'{min_price:.2f} zł', xy=(min_price_date, min_price),
                      xytext=(min_price_date, min_price))
-        # plt.savefig('wykres.png')
-        plt.show()
+        plt.savefig('graph.jpg')
