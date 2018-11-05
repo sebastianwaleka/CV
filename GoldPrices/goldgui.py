@@ -22,6 +22,8 @@ last30 = tkinter.Button(master=root, text='Last 30 days', command=lambda: last(3
 last30.grid(row=0, column=2)
 last90 = tkinter.Button(master=root, text='Last 90 days', command=lambda: last(90), width=17)
 last90.grid(row=0, column=3)
+exit_button = tkinter.Button(master=root, text='EXIT', command=lambda: exit(1), width=38)
+exit_button.grid(row=2, column=1, columnspan=2)
 
 root.mainloop()
 
