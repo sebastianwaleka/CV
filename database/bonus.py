@@ -5,13 +5,11 @@ class DataBase():
     def __init__(self, db_name):
         self.db_name = db_name  # Name of Data Base
         try:
-            with open(f'{db_name}.sqlite') as db:
-                db.read()
-            print(f'Data base named {db_name} already exists.')
+            with open(f'{db_name}.sqlite'):
+                print(f'Data base named {db_name} already exists.')
         except:
-            with open(f'{db_name}.sqlite', 'w') as db:
-                db.read()
-            print(f'Created data base named {db_name}.')
+            with open(f'{db_name}.sqlite', 'w'):
+                print(f'Created data base named {db_name}.')
 
 
 class Table():
