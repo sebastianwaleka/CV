@@ -57,10 +57,3 @@ class Table():
             print(row)
         conn.commit()
         conn.close()
-
-# db = DataBase('Warszawa')
-tb = Table('Warszawa', 'Pracownicy', 'ID','NAME','LAST_NAME','TARGET','SPRZEDAZ','REALIZACJA','KARTY','WKL')
-# tb.create_table('ID','NAME','LAST_NAME','TARGET','SPRZEDAZ','REALIZACJA','KARTY','WKL')
-# tb.add_to_table('Sebastian','Waleka',665000,100000,(100000/665000)*100,2,1000)
-# tb.add_to_table('Wojciech','Zielak',600000,2000000,(200000/600000)*100,5,5500)
-tb.select('ID','NAME','LAST_NAME','KARTY')
