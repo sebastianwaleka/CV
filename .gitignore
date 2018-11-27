@@ -4,3 +4,4 @@ json/.pytest_cache
 palindrome/.pytest_cache
 testy.py
 GoldPrices/__pycache__/
+database/.pytest_cache
